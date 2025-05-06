@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Enquiry" ALTER COLUMN "phone" SET DATA TYPE BIGINT;

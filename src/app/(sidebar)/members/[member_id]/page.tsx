@@ -9,11 +9,12 @@ import { Separator } from "@/components/ui/separator"
 import React, { use, useEffect, useState } from "react"
 import { format, parse } from "date-fns"
 import { AddMember, GetMemberById, MemberInput, MemberResponse, UpdateMemberById } from "@/action/member.action"
-import { Gender } from "@/app/generated/prisma"
+// import { Gender } from "@/app/generated/prisma"
 import { toast } from "sonner"
 import { Phone } from "lucide-react"
 import { useParams } from "next/navigation"
 
+type Gender = "male" | "female" | "other"
 interface FormState {
   name: string
   phone: string
@@ -35,7 +36,7 @@ const page = ({params}: {params:any}) => {
     phone: BigInt(0),
     address: "",
     DOB: "",
-    gender: Gender.other,
+    gender: "other",
     DOJ: "",
     createdAt: new Date(),
     updatedAt: new Date()
