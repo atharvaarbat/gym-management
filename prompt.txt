@@ -1,0 +1,191 @@
+Okay so You have to create Next js server side action functions, This functions will be seprated in different files for different model. This is a Gym management software. You have to use typescript, use prisma and the database is a postgres sql. For all the query you have to use prisma as a ORM. 
+
+
+
+For your reference I have provided the prisma schema models
+
+model Member {
+    id         String          @id @default(uuid())
+    name       String
+    email      String?
+    memberCode String          @unique
+    phone      Int
+    address    String?
+    DOB        String
+    gender     Gender
+    DOJ        String
+    createdAt  DateTime        @default(now())
+    updatedAt  DateTime        @updatedAt
+    sales      Sales[]
+    attendance Attendance[]
+    fitness    FitnessRecord[]
+}
+
+model Services {
+    id          String   @id @default(uuid())
+    name        String
+    description String?
+    price       Int
+    duration    Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    sales       Sales[]
+}
+
+model Sales {
+    id          String   @id @default(uuid())
+    member_id   String
+    service_id  String
+    service     Services @relation(fields: [service_id], references: [id])
+    description String?
+    discount    Int
+    amount      Int
+    paid        Int
+    startDate   String
+    endDate     String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    member      Member   @relation(fields: [member_id], references: [id])
+}
+
+model Attendance {
+    id        String   @id @default(uuid())
+    member_id String
+    member    Member   @relation(fields: [member_id], references: [id])
+    date      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model FitnessRecord {
+    id          String   @id @default(uuid())
+    member_id   String
+    member      Member   @relation(fields: [member_id], references: [id])
+    date        String
+    weight      Int
+    height      Int
+    chest       Int?
+    abs         Int?
+    hips        Int?
+    thighs      Int?
+    treadmill   Int?
+    chestPress  Int?
+    latPulldown Int?
+    squats      Int?
+    sitAndReach Int?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Enquiry {
+    id           String      @id @default(uuid())
+    name         String
+    phone        Int
+    followupDate String?
+    message      String?
+    type         EnquiryType
+    createdAt    DateTime    @default(now())
+    updatedAt    DateTime    @updatedAt
+}
+
+enum EnquiryType {
+    call
+    walkin
+    instagram
+    whatsapp
+}
+
+model ToDo {
+    id        String   @id @default(uuid())
+    title     String
+    completed Boolean  @default(false)
+    isDeleted Boolean  @default(false)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+enum Gender {
+    male
+    female
+    other
+}
+
+You will notice that I have used string for Dates, that is because I don't want any timezone issue and I just want to store date not time. So the format to use all over the software will be "dd-MM-yyyy". You can use libraries like date-fns to make it simpler for you.
+
+
+I hope you have a better understanding of the project now, 
+
+Below is the list of names of functions and there description
+
+Service.action.ts
+1. AddService
+2. GetAllServices
+3. GetServiceById
+4. UpdateServiceById
+5. DeleteServiceById
+
+Member.action.ts 
+1. AddMember
+2. GetMemberById
+3. GetMemberByMemberCode
+4. GetAllMembers
+5. GetAllActiveMembers
+6. UpdateMemberById
+7. DeleteMemberById
+8. GetMembersWithTodaysBirthday
+9. 
+
+Sales.action.ts
+1. AddSales
+2. GetAllSales
+3. GetAllSalesByMemberId
+4. GetSaleById
+5. GetSaleByDate
+6. GetSaleByDateRange
+7. UpdateSaleById
+8. GetAllActiveSale
+9. GetActiveSaleByMemberId
+
+
+Enquiry.action.ts
+1. AddEnquiry
+2. GetEnquiryById
+3. GetAllEnquiry
+4. GetEnquiryByFollowupDate
+5. DeleteEnquiry
+
+FitnessRecord.action.ts
+1. AddFitnessRecord
+2. GetFitnessRecordByMemberId
+3. GetFitnessRecordById
+4. DeleteFitnessRecord
+
+Attendance.action.ts
+1. AddAttendance
+2. GetTodaysAttendance
+3. GetAttendanceByDate
+4. GetAttendanceByMemberId
+5. DeleteAttendanceById
+
+Todo.action.ts
+1. AddTodo
+2. DeleteTodo
+3. CompleteTodo
+4. UncompleteTodo
+
+
+Things to note:
+1. Calculate end date by taking duration (in months) from service selected.
+2. Active Members will be a member with atleast one sale and the sale should be active itself.
+3. Active Sale will be fetched with some rules. Get all sales of a member. Compare todays date with start and end date of sale. Todays date should be within start and end date.
+4. Use date-fns npm library for all date calculations.
+5. stick to the date fomat "dd-MM-yyyy"
+6. phone will be a 10 digit int.
+
+
+In total you have to write 7 file of 7 action file
+You don't have to write all files all together
+First only write member.action.ts
+And then I will ask for any update in it. If no update from my side then I will ask you to write other files. I may ask you to update previous files. 
+
+
