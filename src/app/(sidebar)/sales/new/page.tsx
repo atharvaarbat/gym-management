@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { useLoading } from '@/hooks/use-loading'
 import React, { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -21,6 +22,7 @@ const page = (props: Props) => {
         member: {},
         service: {}
     })
+    const {showLoading, hideLoading} = useLoading()
     const [formState, setFormState] = React.useState<SalesInput>({
         member_id: '',
         service_id: '',
@@ -45,6 +47,7 @@ const page = (props: Props) => {
     }
 
     const handleOnSubmit = async () => {
+        showLoading()
         if (formState.member_id === '' || formState.service_id === '' || formState.amount === 0 || formState.startDate === '' || formState.paid === null || formState.paid <= 0) {
             toast.error('Please fill all the required fields')
             return
@@ -56,7 +59,11 @@ const page = (props: Props) => {
         const response = await AddSales(formState)
         if (response.id) {
             toast.success('Sale added successfully')
+            hideLoading()
+            return
         }
+        hideLoading()
+        toast.error('Failed to add sale')
         
     }
     return (

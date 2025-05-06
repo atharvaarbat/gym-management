@@ -10,22 +10,31 @@ const Page = ({ params }: { params: any }) => {
     const { sale_id } = unwrappedParams as { sale_id: string }
     const contentRef = useRef(null);
     const reactToPrintFn = useReactToPrint({ contentRef });
-    
+
     return (
         <div className='max-w-5xl mx-auto px-4 py-8'>
             <div className='flex items-center justify-between'>
-            <h1 className='text-2xl font-bold mb-6'>Synergy Sales Invoice</h1>
-            <div className='mb-6'>
-                <Button
-                    onClick={reactToPrintFn}
-                    className="bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                    Print Invoice
-                </Button>
-            </div>
+                <h1 className='font-bold mb-6'>Synergy Sales Invoice</h1>
+                <div className='mb-6 flex gap-2'>
+                    <Button
+                        onClick={reactToPrintFn}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                        Print Invoice
+                    </Button>
+                    <Button
+                        onClick={()=>navigator.share({ 
+                            title: "Synergy Sales Invoice", 
+                            text: `Dear customer below is the link of your invoice of your recent purchase at Synergy Fitness & Wellness Club. Thank you for choosing us.\n\nLink: ${window.location.href}\n\n-Team Synergy 💪🏻`, 
+                        })}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                        Share
+                    </Button>
+                </div>
             </div>
             <div className='border border-gray-200 rounded-lg shadow-sm text-sm md:scale-100'>
-                <Invoice ref={contentRef} sale_id={sale_id}/>
+                <Invoice ref={contentRef} sale_id={sale_id} />
             </div>
         </div>
     )
@@ -37,14 +46,14 @@ const Invoice = ({
     ref,
     sale_id
 }: { ref: any, sale_id: string }) => {
-    
+
     const [saleData, setSaleData] = React.useState<ExpandedSalesResponse>()
     useEffect(() => {
         async function fetchData() {
             const sale = await GetSaleWithExpand(sale_id)
             setSaleData(sale)
-        }   
-        fetchData() 
+        }
+        fetchData()
     }, [])
 
     const invoiceData = {
@@ -57,7 +66,7 @@ const Invoice = ({
             email: "synergy.fit.help@gmail.com",
             website: ""
         },
-        
+
         termsAndConditions: [
             "Membership is non-transferable and non-refundable. PowerFit Gym reserves the right to modify the terms of membership. Members must comply with all gym rules and regulations.",
         ]
@@ -129,7 +138,7 @@ const Invoice = ({
                         <div className="flex justify-between py-2 font-bold text-lg border-t border-gray-200 mt-2 pt-2">
                             <span>Balance Due:</span>
                             <span >
-                            ₹{saleData && (saleData?.amount - saleData?.discount - saleData?.paid)}</span>
+                                ₹{saleData && (saleData?.amount - saleData?.discount - saleData?.paid)}</span>
                         </div>
                     </div>
                 </div>

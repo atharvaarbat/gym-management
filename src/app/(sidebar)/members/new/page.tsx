@@ -11,6 +11,7 @@ import { format, parse } from "date-fns"
 import { AddMember, MemberInput } from "@/action/member.action"
 import { toast } from "sonner"
 import { Phone } from "lucide-react"
+import { useLoading } from "@/hooks/use-loading"
 type Gender = "male" | "female" | "other"
 
 interface FormState {
@@ -24,6 +25,7 @@ interface FormState {
 }
 
 const page = () => {
+  const { showLoading, hideLoading } = useLoading()
   const [formState, setFormState] = useState<MemberInput>({
     name: "",
     phone: 0,
@@ -49,6 +51,7 @@ const page = () => {
 
 
   const handleOnSubmit = async () => {
+    showLoading()
     if(formState.name === "" || formState.phone === null || formState.DOB === "" || formState.DOJ === "") {
       toast.error("Please fill all the required fields")
       return
@@ -62,7 +65,12 @@ const page = () => {
     const response = await AddMember(formState)
     if(response.id){
       toast.success("Member added successfully")
+      hideLoading()
+      return
     }
+    hideLoading()
+    toast.error("Failed to add member")
+    return
   }
 
   return (

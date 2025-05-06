@@ -5,6 +5,7 @@ import ItemSelector from '@/components/custom/item-selector'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { useLoading } from '@/hooks/use-loading'
 import { format, set } from 'date-fns'
 import React, { useEffect } from 'react'
 import { toast } from 'sonner'
@@ -12,6 +13,7 @@ import { toast } from 'sonner'
 type Props = {}
 
 const page = (props: Props) => {
+    const {showLoading, hideLoading} = useLoading()
     const [memberList, setMemberList] = React.useState<any[]>([])
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
     const [selectedMember, setSelectedMember] = React.useState<string>()
@@ -37,6 +39,7 @@ const page = (props: Props) => {
         setAttendanceList(data)
     }
     const handleCheckIn = async () => {
+        showLoading()
         setRefresh(!refresh)
         if (!selectedMember) return
         const newAttendance = {
@@ -47,7 +50,9 @@ const page = (props: Props) => {
         const data = await AddAttendance(newAttendance)
         if (data.id) {
             toast.success('Attendance added successfully')
+            
         }
+        hideLoading()
     }
     return (
         <div className='max-w-xl w-full mx-auto space-y-6 p-4'>

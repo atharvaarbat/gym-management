@@ -12,10 +12,13 @@ import {  AddService, ServiceInput } from "@/action/service.action"
 import { AddEnquiry, EnquiryInput } from "@/action/enquiries.action"
 import { DatePickerDemo } from "@/components/custom/date-picker"
 import ItemSelector from "@/components/custom/item-selector"
+import { useLoading } from "@/hooks/use-loading"
+
 
 
 
 const page = () => {
+  const {showLoading, hideLoading} = useLoading()
   const [formState, setFormState] = useState<EnquiryInput>({
     name: '',
     phone: BigInt(0),
@@ -33,6 +36,7 @@ const page = () => {
 
 
   const handleOnSubmit = async () => {
+    showLoading()
     // console.log(formState)
     if(formState.name === "" || formState.phone=== null ) {
       toast.error("Please fill all the required fields")
@@ -49,7 +53,12 @@ const page = () => {
     // console.log(response)
     if(response.id){
       toast.success("Enquiry added successfully")
+      hideLoading()
+      return
     }
+    hideLoading()
+    toast.error("Failed to add enquiry")
+    return
   }
 
   return (

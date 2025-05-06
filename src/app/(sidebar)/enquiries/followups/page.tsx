@@ -53,7 +53,7 @@ const page = (props: Props) => {
   return (
     <div className='max-w-xl w-full mx-auto space-y-6 p-4'>
       <div className='flex items-center justify-between'>
-        <h1 className='text-xl font-semibold'>Birthday Followups</h1>
+        <h1 className='text-xl font-semibold'>Enquiry Followups</h1>
         <DatePickerDemo defaultDate={date} onDateChange={(date) => setDate(date)}/>
       </div>
       <Separator />

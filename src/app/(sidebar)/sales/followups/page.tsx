@@ -55,7 +55,7 @@ const page = (props: Props) => {
 
     async function fetchData() {
         const data = await GetSalesEndingInXdays(days)
-        console.log(await GetSalesEndingInXdays(-1))
+        // console.log(await GetSalesEndingInXdays(-1))
         setSalesList(data)
         hideLoading()
     }

@@ -110,11 +110,6 @@ const data = {
       url: "/sales/new",
       icon: IconFileAi,
     },
-    {
-      name: "Invoices",
-      url: "/sales/invoices",
-      icon: IconFileWord,
-    }
     
   ],
   followups: [

@@ -417,8 +417,8 @@ export async function GetSalesEndingInXdays(
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to start of day
-    
-    if (days > 0) {
+    console.log(days)
+    if (days >= 0) {
       const xDaysLater = addDays(today, days);
       const xDaysLaterStr = format(xDaysLater, "dd-MM-yyyy");
       
@@ -496,7 +496,6 @@ export async function GetSalesEndingInXdays(
   }
 }
 
-
 export async function GetSaleWithExpand(sale_id: string): Promise<any> {
   try {
     const sale = await prisma.sales.findUnique({
@@ -530,3 +529,4 @@ export async function GetSaleWithExpand(sale_id: string): Promise<any> {
     );
   }
 }
+
