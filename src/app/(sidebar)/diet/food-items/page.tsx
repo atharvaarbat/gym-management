@@ -9,6 +9,8 @@ import { IconTrash } from '@tabler/icons-react'
 import Link from 'next/link'
 import React, { useEffect } from 'react'
 import { toast } from 'sonner'
+import { CreatFoodItem } from './Create-food'
+import { DeleteFoodItem, FoodItemResponse, GetAllFoodItems } from '@/action/food-item.action'
 
 type Props = {}
 const columns = [
@@ -17,16 +19,20 @@ const columns = [
     header: 'Name',
   },
   {
-    accessorKey: 'description',
-    header: 'Description',
+    accessorKey: 'calories',
+    header: 'Calories',
   },
   {
-    accessorKey: 'price',
-    header: 'Price',
+    accessorKey: 'protein',
+    header: 'Protein',
   },
   {
-    accessorKey: 'duration',
-    header: 'Duration',
+    accessorKey: 'carbs',
+    header: 'Carbs',
+  },
+  {
+    accessorKey: 'fats',
+    header: 'Fats',
   }
 ]
 
@@ -35,17 +41,18 @@ const DeleteColumn = [{
   header: 'Action',
   cellContent: <Button variant="destructive" size={"icon"} className='cursor-pointer'><IconTrash size={16} /></Button>,
   onClick: async (rowId: any) => {
-    const result = await DeleteServiceById(rowId)
-    toast.success("Service deleted successfully")
+    const result = await DeleteFoodItem(rowId)
+    toast.success("Food item deleted successfully")
+    window.location.reload()
   }
 }]
 
 const MemberPage = (props: Props) => {
-  const [serviceList, setServiceList] = React.useState<ServiceResponse[]>([])
+  const [serviceList, setServiceList] = React.useState<FoodItemResponse[]>([])
   const { showLoading, hideLoading, isLoading } = useLoading()
   useEffect(() => {
     async function fetchData() {
-      const data = await GetAllServices()
+      const data = await GetAllFoodItems()
       setServiceList(data)
       hideLoading()
     }
@@ -57,10 +64,8 @@ const MemberPage = (props: Props) => {
   return (
     <div className='max-w-xl w-full mx-auto space-y-6 p-4'>
       <div className='flex items-center justify-between'>
-        <h1 className='text-xl font-semibold'>Services</h1>
-        <Link href={'/services/new'}>
-          <Button>Create Service</Button>
-        </Link>
+        <h1 className='text-xl font-semibold'>Food Items</h1>
+        <CreatFoodItem/>
       </div>
       <Separator />
       <DataTable dataRows={serviceList} columns={columns} actionColumns={DeleteColumn} isLoading={isLoading} />

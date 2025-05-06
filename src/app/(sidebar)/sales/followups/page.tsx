@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useLoading } from '@/hooks/use-loading'
 import { format } from 'date-fns'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -42,14 +43,13 @@ const page = (props: Props) => {
     const [days, setDays] = useState(0)
     const [SelectedSale, setSelectedSale] = useState<any>(null)
     const [message, setMessage] = useState('')
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const {showLoading, hideLoading, isLoading} = useLoading()
     useEffect(() => {
-
-        setIsLoading(true)
+        showLoading()
         fetchData()
     }, [])
     useEffect(() => {
-        setIsLoading(true)
+        showLoading()
         fetchData()
     }, [days])
 
@@ -57,7 +57,7 @@ const page = (props: Props) => {
         const data = await GetSalesEndingInXdays(days)
         console.log(await GetSalesEndingInXdays(-1))
         setSalesList(data)
-        setIsLoading(false)
+        hideLoading()
     }
 
     const handleSaleSelected = (row: any) => {

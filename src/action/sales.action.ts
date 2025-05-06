@@ -53,6 +53,7 @@ export interface ExpandedSalesResponse {
     memberCode: string;
     email?: string | null;
     phone: bigint;
+    address?: string | null;
   };
   service: {
     id: string;
@@ -492,5 +493,40 @@ export async function GetSalesEndingInXdays(
     return [];
   } catch (error: any) {
     throw new Error(`Failed to fetch sales ending in ${days} days: ${error.message}`);
+  }
+}
+
+
+export async function GetSaleWithExpand(sale_id: string): Promise<any> {
+  try {
+    const sale = await prisma.sales.findUnique({
+      where: { id: sale_id },
+      include: {
+        member: {
+          select: {
+            id: true,
+            name: true,
+            memberCode: true,
+            email: true,
+            phone: true,
+            address: true,
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            duration: true,
+          },
+        },
+      }
+    });
+
+    return sale;
+  } catch (error: any) {
+    throw new Error(
+      `Failed to fetch sales with expanded data: ${error.message}`
+    );
   }
 }

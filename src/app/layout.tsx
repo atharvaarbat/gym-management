@@ -3,6 +3,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Loader from "@/components/custom/Loader";
+import { LoadingProvider } from "@/hooks/use-loading";
+import GlobalLoader from "@/components/custom/Loader";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -35,7 +38,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <LoadingProvider>
+              <GlobalLoader/>
             {children}
+            </LoadingProvider>
             <Toaster />
           </ThemeProvider>
       </body>

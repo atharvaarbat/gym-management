@@ -3,6 +3,7 @@ import { GetAllMembers, getAllMembersWithActiveSale } from '@/action/member.acti
 import { DataTable } from '@/components/custom/data-table'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { useLoading } from '@/hooks/use-loading'
 import Link from 'next/link'
 import {  useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -31,15 +32,16 @@ const columns = [
 const MemberPage = (props: Props) => {
   const router  = useRouter();
   const [memberList, setMemberList] = React.useState<any[]>([])
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  // const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const {showLoading, hideLoading, isLoading} = useLoading()
   useEffect(() => {
     async function fetchData() {
       const data = await getAllMembersWithActiveSale()
       console.log(await getAllMembersWithActiveSale())
       setMemberList(data)
-      setIsLoading(false)
+      hideLoading()
     }
-    setIsLoading(true)
+    showLoading()
     fetchData()
 
   }, [])

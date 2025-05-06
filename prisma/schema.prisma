@@ -29,6 +29,7 @@ model Member {
   sales      Sales[]
   attendance Attendance[]
   fitness    FitnessRecord[]
+  // diets      DietChart[]
 }
 
 model Services {
@@ -121,3 +122,26 @@ enum Gender {
   other
 }
 
+// model DietChart {
+//   id          String   @id @default(uuid())
+//   member_id   String
+//   member      Member   @relation(fields: [member_id], references: [id])
+//   date        String
+//   conditions  Json
+//   meals       Json
+//   note        String
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @updatedAt
+// }
+
+model FoodItems {
+  id          String   @id @default(uuid())
+  name        String
+  calories    Int
+  recipe      String?
+  protein     Int?   // grams
+  carbs       Int?   // grams
+  fats        Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

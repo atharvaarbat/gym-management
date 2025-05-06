@@ -4,8 +4,10 @@ import { DeleteSaleById, GetAllSalesWithExpand, SalesResponse } from '@/action/s
 import { DataTable } from '@/components/custom/data-table'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { IconTrash } from '@tabler/icons-react'
+import { useLoading } from '@/hooks/use-loading'
+import { IconFile, IconTrash } from '@tabler/icons-react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -34,28 +36,43 @@ const columns = [
     header: 'Due',
   },
 ]
-const DeleteColumn = {
-  accessorKey: 'id',
-  header: 'Action',
-  cellContent: <Button variant="destructive" size={"icon"} className='cursor-pointer'><IconTrash size={16} /></Button>,
-  onClick: async (rowId: any) => {
-    const result = await DeleteSaleById(rowId)
-    toast.success("Sales deleted successfully")
-    window.location.reload()
-  }
-}
+
 const SalesPage = (props: Props) => {
   const [salesList, setSalesList] = React.useState<SalesResponse[]>([])
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const { showLoading, hideLoading, isLoading } = useLoading()
+  const router = useRouter()
   useEffect(() => {
     async function fetchData() {
       const data = await GetAllSalesWithExpand()
       setSalesList(data)
-      setIsLoading(false)
+      hideLoading()
     }
-    setIsLoading(true)
+    showLoading()
     fetchData()
   }, [])
+
+  const DeleteColumn = [
+    {
+      accessorKey: 'id',
+      header: 'Delete',
+      cellContent: <Button variant="destructive" size={"icon"} className='cursor-pointer'><IconTrash size={16} /></Button>,
+      onClick: async (rowId: any) => {
+        const result = await DeleteSaleById(rowId)
+        toast.success("Sales deleted successfully")
+        window.location.reload()
+      },
+      
+    },
+    {
+      accessorKey: 'id',
+      header: 'Invoice',
+      cellContent: <Button size={"sm"} className='cursor-pointer'><IconFile/></Button>,
+      onClick: async (rowId: any) => {
+        router.push(`/invoices/${rowId}`)
+      },
+      
+    }
+  ]
   return (
     <div className='max-w-xl w-full mx-auto space-y-6 p-4'>
       <div className='flex items-center justify-between'>
@@ -65,7 +82,7 @@ const SalesPage = (props: Props) => {
         </Link>
       </div>
       <Separator />
-      <DataTable dataRows={salesList} actionColumn={DeleteColumn} columns={columns} isLoading={isLoading} />
+      <DataTable dataRows={salesList} actionColumns={DeleteColumn} columns={columns} isLoading={isLoading} />
     </div>
   )
 }

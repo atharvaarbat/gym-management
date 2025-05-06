@@ -13,6 +13,7 @@ import { AddMember, GetMemberById, MemberInput, MemberResponse, UpdateMemberById
 import { toast } from "sonner"
 import { Phone } from "lucide-react"
 import { useParams } from "next/navigation"
+import { useLoading } from "@/hooks/use-loading"
 
 type Gender = "male" | "female" | "other"
 interface FormState {
@@ -43,14 +44,16 @@ const page = ({params}: {params:any}) => {
   }) 
   const unwrappedParams = React.use(params)
   const { member_id } = unwrappedParams as {member_id: string}
-
+  const {showLoading, hideLoading, isLoading} = useLoading()
   useEffect(()=>{
+    showLoading()
     async function fetchData() {
       const data = await GetMemberById(member_id)
       if(!data) {
         return
       }
       setFormState(data)
+      hideLoading()
       console.log(data)
     }
     fetchData()

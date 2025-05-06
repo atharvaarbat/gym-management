@@ -75,6 +75,11 @@ const data = {
       url: "/services",
       icon: IconReport,
     },
+    {
+      title: "Diet Chart",
+      url: "/diet",
+      icon: IconSettings,
+    }
     
   ],
   navSecondary: [
@@ -105,6 +110,11 @@ const data = {
       url: "/sales/new",
       icon: IconFileAi,
     },
+    {
+      name: "Invoices",
+      url: "/sales/invoices",
+      icon: IconFileWord,
+    }
     
   ],
   followups: [

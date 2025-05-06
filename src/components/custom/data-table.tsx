@@ -22,14 +22,14 @@ interface Props {
         headerClassName?: string,
         cellClassName?: string
     }[],
-    actionColumn?: {
+    actionColumns?: {
         accessorKey: string,
         header: string,
         headerClassName?: string,
         cellClassName?: string,
         cellContent: React.ReactNode,
         onClick: (rowId: any) => void
-    },
+    }[],
     isLoading?: boolean,
     onItemClick?: (row: any) => void
 }
@@ -37,7 +37,7 @@ interface Props {
 export function DataTable({
     dataRows,
     columns,
-    actionColumn,
+    actionColumns,
     isLoading,
     onItemClick,
     ...props
@@ -86,10 +86,12 @@ export function DataTable({
                                 ))
                             }
                             {
-                                actionColumn && (
-                                    <TableHead className={actionColumn.headerClassName}>
-                                        {actionColumn.header}
-                                    </TableHead>
+                                actionColumns && (
+                                    actionColumns.map((column) => (
+                                        <TableHead className={column.headerClassName}>
+                                            {column.header}
+                                        </TableHead>
+                                    ))
                                 )
                             }
                         </TableRow>
@@ -124,13 +126,15 @@ export function DataTable({
                                                 ))
                                             }
                                             {
-                                                actionColumn && (
-                                                    <TableCell className={actionColumn.cellClassName}>
-                                                        <div onClick={() => actionColumn.onClick(row[actionColumn.accessorKey])}>
-                                                            {actionColumn.cellContent}
-                                                        </div>
-                                                    </TableCell>
-                                                )
+                                                actionColumns && (
+                                                    actionColumns.map((column) => (
+                                                        <TableCell className={column.cellClassName}>
+                                                            <div onClick={() => column.onClick(row[column.accessorKey])}>
+                                                                {column.cellContent}
+                                                            </div>
+                                                        </TableCell>
+                                                    )
+                                                    ))
                                             }
                                         </TableRow>
                                     ))
