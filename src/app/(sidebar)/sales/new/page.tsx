@@ -59,6 +59,15 @@ const page = (props: Props) => {
         const response = await AddSales(formState)
         if (response.id) {
             toast.success('Sale added successfully')
+            setFormState({
+                member_id: '',
+                service_id: '',
+                description: '',
+                discount: 0,
+                amount: 0,
+                paid: 0,
+                startDate: ''
+            })
             hideLoading()
             return
         }

@@ -53,6 +53,15 @@ const page = () => {
     // console.log(response)
     if(response.id){
       toast.success("Enquiry added successfully")
+      setFormState(
+        {
+          name: '',
+          phone: BigInt(0),
+          followupDate: '',
+          message: '',
+          type: 'walkin',
+        }
+      )
       hideLoading()
       return
     }

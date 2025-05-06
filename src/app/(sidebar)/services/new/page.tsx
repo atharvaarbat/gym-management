@@ -44,6 +44,12 @@ const page = () => {
     const response = await AddService(formState)
     // console.log(response)
     if(response.id){
+      setFormState({
+        name: "",
+        description: "",
+        price: 0,
+        duration: 0
+      })
       toast.success("Service added successfully")
     }
   }

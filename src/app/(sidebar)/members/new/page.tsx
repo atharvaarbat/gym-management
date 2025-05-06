@@ -65,6 +65,18 @@ const page = () => {
     const response = await AddMember(formState)
     if(response.id){
       toast.success("Member added successfully")
+      setFormState(
+        {
+          name: "",
+          phone: 0,
+          email: "@gmail.com",
+          memberCode: "",
+          gender: "other",
+          DOB: "",
+          DOJ: "",
+          address: "Akola",
+        }
+      )
       hideLoading()
       return
     }
