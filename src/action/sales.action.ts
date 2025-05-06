@@ -417,7 +417,7 @@ export async function GetSalesEndingInXdays(
   try {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Normalize to start of day
-    console.log(days)
+    // console.log(days)
     if (days >= 0) {
       const xDaysLater = addDays(today, days);
       const xDaysLaterStr = format(xDaysLater, "dd-MM-yyyy");
@@ -530,3 +530,59 @@ export async function GetSaleWithExpand(sale_id: string): Promise<any> {
   }
 }
 
+
+
+export async function getAllExpiringSalesInXDays(
+  days: number
+): Promise<SalesResponse[]> {
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Normalize to start of day
+
+    if (days >= 0) {
+      const xDaysLater = addDays(today, days);
+
+      // Fetch all sales (we'll filter in JavaScript due to string date storage)
+      const allSales = await prisma.sales.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+          service: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          member: {
+            select: {
+              id: true,
+              name: true,
+              phone: true,
+            },
+          },
+        },
+      });
+
+      // Filter sales where endDate is between today and xDaysLater (inclusive)
+      const expiringSales = allSales.filter((sale) => {
+        try {
+          const endDate = parse(sale.endDate, "dd-MM-yyyy", new Date());
+          return endDate >= today && endDate <= xDaysLater;
+        } catch {
+          return false; // Skip if date parsing fails
+        }
+      });
+
+      return expiringSales.map((sale) => ({
+        ...sale,
+        description: sale.description ?? undefined,
+        service_name: sale.service.name,
+        member_name: sale.member.name,
+        member_phone: sale.member.phone,
+      }));
+    }
+
+    return [];
+  } catch (error: any) {
+    throw new Error(`Failed to fetch sales expiring in ${days} days: ${error.message}`);
+  }
+}

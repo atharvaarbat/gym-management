@@ -28,7 +28,8 @@ interface Props {
         headerClassName?: string,
         cellClassName?: string,
         cellContent: React.ReactNode,
-        onClick: (rowId: any) => void
+        onClick?: (rowId: any) => void,
+        onClickGetRow?: (row: any) => void
     }[],
     isLoading?: boolean,
     onItemClick?: (row: any) => void
@@ -127,9 +128,12 @@ export function DataTable({
                                             }
                                             {
                                                 actionColumns && (
-                                                    actionColumns.map((column) => (
-                                                        <TableCell className={column.cellClassName}>
-                                                            <div onClick={() => column.onClick(row[column.accessorKey])}>
+                                                    actionColumns.map((column, index) => (
+                                                        <TableCell className={column.cellClassName} key={index}>
+                                                            <div onClick={() => {
+                                                                column.onClick && column.onClick(row[column.accessorKey])
+                                                                column.onClickGetRow && column.onClickGetRow(row)
+                                                            }}>
                                                                 {column.cellContent}
                                                             </div>
                                                         </TableCell>

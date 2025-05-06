@@ -1,6 +1,6 @@
 'use client'
 import { GetEnquiryByFollowupDate } from '@/action/enquiries.action'
-import { GetSalesEndingInXdays } from '@/action/sales.action'
+import { getAllExpiringSalesInXDays, GetSalesEndingInXdays } from '@/action/sales.action'
 import { DataTable } from '@/components/custom/data-table'
 import { DatePickerDemo } from '@/components/custom/date-picker'
 import { Button } from '@/components/ui/button'
@@ -54,10 +54,18 @@ const page = (props: Props) => {
     }, [days])
 
     async function fetchData() {
-        const data = await GetSalesEndingInXdays(days)
+        if (days === -1) {
+            const data = await GetSalesEndingInXdays(-1)
+            setSalesList(data)
+            hideLoading()
+            return
+        }else{
+            const data = await getAllExpiringSalesInXDays(days)
+            setSalesList(data)
+            hideLoading()
+            return
+        }
         // console.log(await GetSalesEndingInXdays(-1))
-        setSalesList(data)
-        hideLoading()
     }
 
     const handleSaleSelected = (row: any) => {

@@ -5,7 +5,7 @@ import { DataTable } from '@/components/custom/data-table'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useLoading } from '@/hooks/use-loading'
-import { IconFile, IconTrash } from '@tabler/icons-react'
+import { IconFile, IconSend, IconTrash } from '@tabler/icons-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
@@ -55,22 +55,34 @@ const SalesPage = (props: Props) => {
     {
       accessorKey: 'id',
       header: 'Delete',
-      cellContent: <Button variant="destructive" size={"icon"} className='cursor-pointer'><IconTrash size={16} /></Button>,
+      cellContent: <Button variant="destructive" className='cursor-pointer'><IconTrash size={16} /></Button>,
       onClick: async (rowId: any) => {
         const result = await DeleteSaleById(rowId)
         toast.success("Sales deleted successfully")
         window.location.reload()
       },
-      
+
     },
     {
       accessorKey: 'id',
       header: 'Invoice',
-      cellContent: <Button size={"sm"} className='cursor-pointer'><IconFile/></Button>,
+      cellContent: <Button size={"sm"} variant={"secondary"} className='cursor-pointer'><IconFile /></Button>,
       onClick: async (rowId: any) => {
         router.push(`/invoices/${rowId}`)
       },
-      
+
+    },
+    {
+      accessorKey: 'id',
+      header: 'Send',
+      cellContent: <Button size={"sm"} variant={"secondary"} className='cursor-pointer'><IconSend /></Button>,
+
+      onClickGetRow: (row: any) => {
+        console.log(row)
+        const message = `Hi ${row.member_name}, your invoice for ${row.service_name} is attached with this message, thank you for choosing us. Stay healthy Stay strong. %0A%0Ahttps://gym-prisma.vercel.app/invoices/${row.id} %0A%0A -Team Synergy 💪🏻`
+        window.open(`https://api.whatsapp.com/send?phone=91${row.member.phone}&text=${message}`)
+      }
+
     }
   ]
   return (
