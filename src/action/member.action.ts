@@ -1,6 +1,6 @@
 "use server";
 
-import prisma  from "@/lib/prisma";
+import prisma from "@/lib/prisma";
 import {
   format,
   parse,
@@ -190,30 +190,30 @@ export async function GetAllMembers(): Promise<MemberResponse[]> {
 }
 
 // 5. GetAllActiveMembers
-export async function GetAllActiveMembers(): Promise<MemberResponse[]> {
-  try {
-    const today = format(new Date(), "dd-MM-yyyy");
-    const members = await prisma.member.findMany({
-      where: {
-        sales: {
-          some: {
-            startDate: { lte: today },
-            endDate: { gte: today },
-          },
-        },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+// export async function GetAllActiveMembers(): Promise<MemberResponse[]> {
+//   try {
+//     const today = format(new Date(), "dd-MM-yyyy");
+//     const members = await prisma.member.findMany({
+//       where: {
+//         sales: {
+//           some: {
+//             startDate: { lte: today },
+//             endDate: { gte: today },
+//           },
+//         },
+//       },
+//       orderBy: { createdAt: "desc" },
+//     });
 
-    return members.map((member: any) => ({
-      ...member,
-      email: member.email ?? undefined,
-      address: member.address ?? undefined,
-    }));
-  } catch (error: any) {
-    throw new Error(`Failed to fetch active members: ${error.message}`);
-  }
-}
+//     return members.map((member: any) => ({
+//       ...member,
+//       email: member.email ?? undefined,
+//       address: member.address ?? undefined,
+//     }));
+//   } catch (error: any) {
+//     throw new Error(`Failed to fetch active members: ${error.message}`);
+//   }
+// }
 
 // 6. UpdateMemberById
 export async function UpdateMemberById(
@@ -306,7 +306,9 @@ export async function GetMembersWithTodaysBirthday(): Promise<
   }
 }
 
-export async function GetMembersWithDOB(date: string): Promise<MemberResponse[]> {
+export async function GetMembersWithDOB(
+  date: string
+): Promise<MemberResponse[]> {
   try {
     const SlicedDate = date.slice(0, 5);
     const members = await prisma.member.findMany({
@@ -327,30 +329,36 @@ export async function GetMembersWithDOB(date: string): Promise<MemberResponse[]>
 }
 
 // GetAllMembersWithActiveSale
-export async function getAllMembersWithActiveSale(): Promise<(MemberResponse & { activeSale: SalesResponse | null })[]> {
+export async function getAllMembersWithActiveSale(): Promise<
+  (MemberResponse & { activeSale: SalesResponse | null })[]
+> {
   try {
     const today = new Date();
     const members = await prisma.member.findMany({
       include: {
         sales: {
-          orderBy: { createdAt: 'desc' },
-          include:{
-            service: true
-          }
+          orderBy: { createdAt: "desc" },
+          include: {
+            service: true,
+          },
         },
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
     return members.map((member) => {
       // Find the most recent active sale
-      const activeSale = member.sales
-        .filter((sale) => {
-          const startDate = parse(sale.startDate, 'dd-MM-yyyy', new Date());
-          const endDate = parse(sale.endDate, 'dd-MM-yyyy', new Date());
-          return isWithinInterval(today, { start: startDate, end: endDate });
-        })
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0] || null;
+      const activeSale =
+        member.sales
+          .filter((sale) => {
+            const startDate = parse(sale.startDate, "dd-MM-yyyy", new Date());
+            const endDate = parse(sale.endDate, "dd-MM-yyyy", new Date());
+            return isWithinInterval(today, { start: startDate, end: endDate });
+          })
+          .sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )[0] || null;
 
       return {
         ...member,
@@ -363,10 +371,112 @@ export async function getAllMembersWithActiveSale(): Promise<(MemberResponse & {
             }
           : null,
         activeServiceName: activeSale ? activeSale.service.name : null,
-        age: differenceInYears(today, parse(member.DOB, 'dd-MM-yyyy', new Date())),
+        age: differenceInYears(
+          today,
+          parse(member.DOB, "dd-MM-yyyy", new Date())
+        ),
       };
     });
-  } catch (error:any) {
-    throw new Error(`Failed to fetch members with active sale: ${error.message}`);
+  } catch (error: any) {
+    throw new Error(
+      `Failed to fetch members with active sale: ${error.message}`
+    );
+  }
+}
+
+export async function getAllInActiveMembers(): Promise<any[]> {
+  try {
+    const today = new Date();
+
+    const members = await prisma.member.findMany({
+      include: {
+        sales: {
+          orderBy: { createdAt: "desc" },
+          include: {
+            service: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Efficiently filter and map in a single pass
+    const activeMembers = members.reduce((result: any[], member) => {
+      const activeSale = member.sales.find((sale) => {
+        const startDate = parse(sale.startDate, "dd-MM-yyyy", new Date());
+        const endDate = parse(sale.endDate, "dd-MM-yyyy", new Date());
+        return isWithinInterval(today, { start: startDate, end: endDate });
+      });
+
+      if (!activeSale) {
+        result.push({
+          ...member,
+          email: member.email ?? undefined,
+          address: member.address ?? undefined,
+          age: differenceInYears(
+            today,
+            parse(member.DOB, "dd-MM-yyyy", new Date())
+          ),
+        });
+      }
+
+      return result;
+    }, []);
+
+    return activeMembers;
+  } catch (error: any) {
+    throw new Error(
+      `Failed to fetch members with active sale: ${error.message}`
+    );
+  }
+}
+
+
+export async function getAllActiveMembers(): Promise<any[]> {
+  try {
+    const today = new Date();
+
+    const members = await prisma.member.findMany({
+      include: {
+        sales: {
+          orderBy: { createdAt: "desc" },
+          include: {
+            service: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Efficiently filter and map in a single pass
+    const activeMembers = members.reduce((result: any[], member) => {
+      const activeSale = member.sales.find((sale) => {
+        const startDate = parse(sale.startDate, "dd-MM-yyyy", new Date());
+        const endDate = parse(sale.endDate, "dd-MM-yyyy", new Date());
+        return isWithinInterval(today, { start: startDate, end: endDate });
+      });
+
+      if (activeSale) {
+        result.push({
+          ...member,
+          email: member.email ?? undefined,
+          address: member.address ?? undefined,
+          activeSale,
+          activeServiceName: activeSale.service?.name ?? null,
+          age: differenceInYears(
+            today,
+            parse(member.DOB, "dd-MM-yyyy", new Date())
+          ),
+        });
+      }
+
+      return result;
+    }, []);
+
+    return activeMembers;
+  } catch (error: any) {
+    throw new Error(
+      `Failed to fetch members with active sale: ${error.message}`
+    );
   }
 }

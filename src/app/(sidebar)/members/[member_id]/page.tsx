@@ -14,6 +14,7 @@ import { toast } from "sonner"
 import { Phone } from "lucide-react"
 import { useParams } from "next/navigation"
 import { useLoading } from "@/hooks/use-loading"
+import AttendanceSummary from "./AttendanceSummary"
 
 type Gender = "male" | "female" | "other"
 interface FormState {
@@ -202,6 +203,8 @@ const page = ({params}: {params:any}) => {
       <Button className="w-full md:w-fit px-8" onClick={handleOnSubmit}>
         Update
       </Button>
+      <Separator/>
+      <AttendanceSummary member_id={member_id}/>
     </div>
   )
 }

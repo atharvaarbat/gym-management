@@ -8,11 +8,25 @@ import {
 } from "@/components/ui/sidebar"
 
 import data from "./data.json"
+import PendingPayments from "../sales/pending-payments/PendingPayments"
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { GetSalesWithPendingAmount } from "@/action/sales.action"
 
-export default function Page() {
+export default async function Page() {
   return (
     <>
       <SectionCards />
+      <div className="px-4 lg:px-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Pending Payments</CardTitle>
+            <CardAction className="text-muted-foreground">Total Amount: ₹{(await GetSalesWithPendingAmount()).total}</CardAction>
+          </CardHeader>
+          <CardContent>
+            <PendingPayments pendingPayments={await GetSalesWithPendingAmount()} />
+          </CardContent>
+        </Card>
+      </div>
       <div className="px-4 lg:px-6">
         <ChartAreaInteractive />
       </div>

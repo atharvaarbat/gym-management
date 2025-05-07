@@ -28,6 +28,7 @@ interface Props {
         headerClassName?: string,
         cellClassName?: string,
         cellContent: React.ReactNode,
+        cellContentGetRow?: (row: any) => React.ReactNode,
         onClick?: (rowId: any) => void,
         onClickGetRow?: (row: any) => void
     }[],
@@ -75,7 +76,7 @@ export function DataTable({
                 </span>
             </div>
             <div className="overflow-hidden rounded-lg border">
-                <Table>
+                <Table className="max-h-[100px]">
                     <TableHeader className="bg-input/30 sticky top-0 z-10">
                         <TableRow >
                             <TableHead className="">No.</TableHead>
@@ -88,8 +89,8 @@ export function DataTable({
                             }
                             {
                                 actionColumns && (
-                                    actionColumns.map((column) => (
-                                        <TableHead className={column.headerClassName}>
+                                    actionColumns.map((column, index) => (
+                                        <TableHead className={column.headerClassName} key={index}>
                                             {column.header}
                                         </TableHead>
                                     ))
@@ -111,7 +112,7 @@ export function DataTable({
 
                             </TableBody>
                         ) : (
-                            <TableBody>
+                            <TableBody className="">
                                 {filteredRows.length > 0 ? (
                                     filteredRows.map((row: any, index: number) => (
                                         <TableRow key={index} onClick={() => onItemClick && onItemClick(row)} className="cursor-pointer hover:bg-muted">
@@ -134,7 +135,7 @@ export function DataTable({
                                                                 column.onClick && column.onClick(row[column.accessorKey])
                                                                 column.onClickGetRow && column.onClickGetRow(row)
                                                             }}>
-                                                                {column.cellContent}
+                                                                {(column.cellContentGetRow) ? column.cellContentGetRow(row) : column.cellContent}
                                                             </div>
                                                         </TableCell>
                                                     )
@@ -156,9 +157,8 @@ export function DataTable({
                         )
                     }
 
-                    <TableFooter>
-                        {/* You can add summary rows here if needed */}
-                    </TableFooter>
+                    {/* <TableFooter>
+                    </TableFooter> */}
                 </Table>
             </div>
         </div>

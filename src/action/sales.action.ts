@@ -8,7 +8,11 @@ import {
   isWithinInterval,
   addMonths,
   addDays,
+  subDays,
+  startOfMonth,
+  endOfMonth,
 } from "date-fns";
+import { MemberResponse } from "./member.action";
 
 // Type definitions
 export interface SalesInput {
@@ -421,7 +425,7 @@ export async function GetSalesEndingInXdays(
     if (days >= 0) {
       const xDaysLater = addDays(today, days);
       const xDaysLaterStr = format(xDaysLater, "dd-MM-yyyy");
-      
+
       const sales = await prisma.sales.findMany({
         where: {
           endDate: xDaysLaterStr,
@@ -472,7 +476,7 @@ export async function GetSalesEndingInXdays(
       });
 
       // Filter sales where endDate is before today
-      const expiredSales = allSales.filter(sale => {
+      const expiredSales = allSales.filter((sale) => {
         try {
           const endDate = parse(sale.endDate, "dd-MM-yyyy", new Date());
           return endDate < today;
@@ -489,10 +493,12 @@ export async function GetSalesEndingInXdays(
         member_phone: sale.member.phone,
       }));
     }
-    
+
     return [];
   } catch (error: any) {
-    throw new Error(`Failed to fetch sales ending in ${days} days: ${error.message}`);
+    throw new Error(
+      `Failed to fetch sales ending in ${days} days: ${error.message}`
+    );
   }
 }
 
@@ -519,7 +525,7 @@ export async function GetSaleWithExpand(sale_id: string): Promise<any> {
             duration: true,
           },
         },
-      }
+      },
     });
 
     return sale;
@@ -529,8 +535,6 @@ export async function GetSaleWithExpand(sale_id: string): Promise<any> {
     );
   }
 }
-
-
 
 export async function getAllExpiringSalesInXDays(
   days: number
@@ -583,6 +587,163 @@ export async function getAllExpiringSalesInXDays(
 
     return [];
   } catch (error: any) {
-    throw new Error(`Failed to fetch sales expiring in ${days} days: ${error.message}`);
+    throw new Error(
+      `Failed to fetch sales expiring in ${days} days: ${error.message}`
+    );
   }
 }
+
+// GetAllActiveMembers
+export async function getAllActiveMembers(): Promise<MemberResponse[]> {
+  try {
+    const today = new Date();
+    const sales = await prisma.sales.findMany({
+      include: {
+        member: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            memberCode: true,
+            phone: true,
+            address: true,
+            DOB: true,
+            gender: true,
+            DOJ: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
+    });
+
+    // Filter active sales based on date range
+    const activeMembers = sales
+      .filter((sale) => {
+        const startDate = parse(sale.startDate, "dd-MM-yyyy", new Date());
+        const endDate = parse(sale.endDate, "dd-MM-yyyy", new Date());
+        return isWithinInterval(today, { start: startDate, end: endDate });
+      })
+      .map((sale) => sale.member);
+
+    // Remove duplicate members by id
+    const uniqueMembers = Array.from(
+      new Map(activeMembers.map((member) => [member.id, member])).values()
+    );
+
+    return uniqueMembers.map((member) => ({
+      ...member,
+      email: member.email ?? undefined,
+      address: member.address ?? undefined,
+    }));
+  } catch (error: any) {
+    throw new Error(`Failed to fetch active members: ${error.message}`);
+  }
+}
+
+// GetSalesWithinLast7Days
+export async function GetSalesWithinLast7Days(): Promise<SalesResponse[]> {
+  try {
+    const today = new Date();
+    const sevenDaysAgo = subDays(today, 7);
+
+    const sales = await prisma.sales.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+
+    const filteredSales = sales.filter((sale) => {
+      const startDate = parse(sale.startDate, "dd-MM-yyyy", new Date());
+      return isWithinInterval(startDate, { start: sevenDaysAgo, end: today });
+    });
+
+    return filteredSales.map((sale) => ({
+      ...sale,
+      description: sale.description ?? undefined,
+    }));
+  } catch (error: any) {
+    throw new Error(
+      `Failed to fetch sales within last 7 days: ${error.message}`
+    );
+  }
+}
+
+// GetSalesInCurrentMonth
+export async function GetSalesInCurrentMonth(): Promise<SalesResponse[]> {
+  try {
+    const today = format(new Date(), "MM-yyyy");
+
+    const sales = await prisma.sales.findMany({
+      where: {
+        startDate: {
+          contains: `-${today}`, // Matches dates ending with -MM-yyyy
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return sales.map((sale) => ({
+      ...sale,
+      description: sale.description ?? undefined,
+    }));
+  } catch (error: any) {
+    throw new Error(`Failed to fetch sales in current month: ${error.message}`);
+  }
+}
+
+// GetSalesWithPendingAmount
+export async function GetSalesWithPendingAmount(): Promise<any> {
+  try {
+    const sales = await prisma.sales.findMany({
+      include: {
+        member: {
+          select: {
+            id: true,
+            name: true,
+            phone: true,
+          },
+        },
+        service: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            duration: true,
+          },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    const filteredSales = sales.filter(
+      (sale) => sale.amount - sale.discount - sale.paid > 0
+    );
+
+    return {
+      sales: filteredSales.map((sale) => ({
+        // ...sale,
+        id: sale.id,
+        description: sale.description ?? undefined,
+        member_name: sale.member.name,
+        member_phone: sale.member.phone,
+        service_name: sale.service.name,
+        amount: sale.amount,
+        discount: sale.discount,
+        paid: sale.paid,
+        due: sale.amount - sale.discount - sale.paid,
+        // service: {
+        //   ...sale.service,
+        // },
+      })),
+      total: filteredSales.reduce(
+        (acc, sale) => acc + sale.amount - sale.discount - sale.paid,
+        0
+      ),
+    };
+  } catch (error: any) {
+    throw new Error(
+      `Failed to fetch sales with pending amount: ${error.message}`
+    );
+  }
+}
+
+
