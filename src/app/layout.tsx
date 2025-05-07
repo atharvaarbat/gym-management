@@ -21,9 +21,6 @@ import { CookiesProvider } from "react-cookie";
 export const metadata: Metadata = {
   title: "Synergy Fitness & Wellness Club",
   description: "Best gym in Akola",
-  // icons: {
-  //   icon: "/favicon.ico",
-  // },
 
 };
 
@@ -38,6 +35,8 @@ export default function RootLayout({
         <meta property="og:image" content="/synergy.png"/>
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="627" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/fav.png"/>
       </head>
       <body
         className={`antialiased`}
