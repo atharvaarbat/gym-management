@@ -14,11 +14,11 @@ export function SiteHeader() {
         />
         <h1 className="text-base font-medium"></h1>
         <div className="ml-auto flex items-center gap-2">
-          <Link href={'/fitness-record'}>
+          {/* <Link href={'/fitness-record'}>
             <Button variant={'secondary'} size={'sm'}>
               Fitness Record
             </Button>
-          </Link>
+          </Link> */}
           <Link href={'/attendance'}>
             <Button variant={'secondary'} size={'sm'}>
               Attendance

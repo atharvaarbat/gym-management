@@ -63,7 +63,9 @@ const MemberPage = (props: Props) => {
         </Link>
       </div>
       <Separator />
-      <DataTable dataRows={serviceList} columns={columns} actionColumns={DeleteColumn} isLoading={isLoading} />
+      <DataTable dataRows={serviceList} columns={columns}
+        // actionColumns={DeleteColumn}
+        isLoading={isLoading} />
     </div>
   )
 }

@@ -50,10 +50,12 @@ const page = (props: Props) => {
         showLoading()
         if (formState.member_id === '' || formState.service_id === '' || formState.amount === 0 || formState.startDate === '' || formState.paid === null || formState.paid <= 0) {
             toast.error('Please fill all the required fields')
+            hideLoading()
             return
         }
         if (formState.amount <= 0) {
             toast.error('Amount must be greater than zero')
+            hideLoading()
             return
         }
         const response = await AddSales(formState)

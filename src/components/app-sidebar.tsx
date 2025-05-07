@@ -19,6 +19,7 @@ import {
   IconReport,
   IconSearch,
   IconSettings,
+  IconToiletPaper,
   IconUser,
   IconUserCancel,
   IconUsers,
@@ -87,6 +88,11 @@ const data = {
       title: "Attendance",
       url: "/attendance",
       icon: IconDoorEnter,
+    },
+    {
+      title: "Fitness Tools",
+      url: "/tools",
+      icon: IconToiletPaper,
     },
   ],
   documents: [
