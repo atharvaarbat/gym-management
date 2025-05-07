@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { type Icon } from "@tabler/icons-react"
+import { IconLogout, type Icon } from "@tabler/icons-react"
 
 import {
   SidebarGroup,
@@ -35,6 +35,18 @@ export function NavSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
+          <SidebarMenuItem >
+              <SidebarMenuButton asChild onClick={() => {
+                localStorage.removeItem('pin')
+                window.location.reload()
+              }}>
+                <div>
+
+                  <IconLogout />
+                  <span>Logout</span>
+                </div>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Loader from "@/components/custom/Loader";
 import { LoadingProvider } from "@/hooks/use-loading";
 import GlobalLoader from "@/components/custom/Loader";
+import { CookiesProvider } from "react-cookie";
 
 // const geistSans = Geist({
 //   variable: "--font-geist-sans",
@@ -38,12 +39,14 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
+
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-        >
+          >
+        
           <LoadingProvider>
             <GlobalLoader />
             {children}
