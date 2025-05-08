@@ -115,7 +115,7 @@ const page = () => {
         </Label>
         <Input
           placeholder="Message"
-          type="tel"
+          type="text"
           required
           value={formState.message}
           onChange={(e) => handleInputChange(e.target.value, "message")}
