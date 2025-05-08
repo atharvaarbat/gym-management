@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/card"
 import { getAllActiveMembers, GetAllMembers } from "@/action/member.action"
 import { GetSalesInCurrentMonth, GetSalesWithinLast7Days } from "@/action/sales.action"
+import { revalidatePath } from "next/cache"
 
 export async function SectionCards() {
+  revalidatePath('/dashboard')
   const SalesIn7Days = await GetSalesWithinLast7Days()
   const Last7DaysAmount = SalesIn7Days.reduce((total, sale) => total + sale.amount - sale.discount, 0)
   const SalesInThisMonth = await GetSalesInCurrentMonth()
