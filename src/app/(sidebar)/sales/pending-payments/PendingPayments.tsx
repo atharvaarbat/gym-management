@@ -4,15 +4,11 @@ import { DataTable } from '@/components/custom/data-table'
 import { Button } from '@/components/ui/button'
 import { IconSend } from '@tabler/icons-react'
 import { on } from 'events'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { PayPendingDialog } from './PayPendingButton'
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-type Props = {
-    pendingPayments: {
-        sales: any[],
-        total: number
-    }
-}
+type Props = {}
 
 const columns = [
     {
@@ -34,10 +30,25 @@ const columns = [
 ]
 
 
-const PendingPayments = ({
-    pendingPayments
-}: Props) => {
-    
+const PendingPayments = ({ }: Props) => {
+    const [data, setData] = React.useState<any>()
+    const [isLoading, setIsLoading] = React.useState(true)
+    useEffect(() => {
+        setIsLoading(true)
+        const fetchData = async () => {
+            try {
+                const pendingPayments = (await GetSalesWithPendingAmount())
+                setData(pendingPayments)
+                setIsLoading(false)
+            } catch (error) {
+                console.error("Error fetching data:", error)
+                setIsLoading(false)
+            }
+        }
+
+        fetchData()
+    }, [])
+
     const actions = [
         {
             accessorKey: 'id',
@@ -58,9 +69,16 @@ const PendingPayments = ({
         }
     ]
     return (
-        <div>
-            <DataTable dataRows={pendingPayments.sales || []} columns={columns} actionColumns={actions} />
-        </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Pending Payments</CardTitle>
+                    <CardAction className="text-muted-foreground">Total Amount: ₹{(data?.total || 0)}</CardAction>
+                </CardHeader>
+                <CardContent>
+                    <DataTable dataRows={data?.sales || []} isLoading={isLoading} columns={columns} actionColumns={actions} />
+
+                </CardContent>
+            </Card>
     )
 }
 

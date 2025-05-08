@@ -17,15 +17,9 @@ export default async function Page() {
     <>
       <SectionCards />
       <div className="px-4 lg:px-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Pending Payments</CardTitle>
-            <CardAction className="text-muted-foreground">Total Amount: ₹{(await GetSalesWithPendingAmount()).total}</CardAction>
-          </CardHeader>
-          <CardContent>
-            <PendingPayments pendingPayments={await GetSalesWithPendingAmount()} />
-          </CardContent>
-        </Card>
+
+        <PendingPayments />
+
       </div>
       <div className="px-4 lg:px-6">
         {/* <ChartAreaInteractive /> */}
