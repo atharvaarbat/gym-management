@@ -76,11 +76,11 @@ const data = {
       url: "/services",
       icon: IconReport,
     },
-    {
-      title: "Diet Chart",
-      url: "/diet",
-      icon: IconSettings,
-    }
+    // {
+    //   title: "Diet Chart",
+    //   url: "/diet",
+    //   icon: IconSettings,
+    // }
     
   ],
   navSecondary: [

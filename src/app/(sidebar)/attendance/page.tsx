@@ -54,6 +54,14 @@ const page = (props: Props) => {
         }
         hideLoading()
     }
+
+    function convertToAmPm(timeStr: string) {
+        const [hour, minute, sec] = timeStr.split(':');
+        let h = parseInt(hour);
+        const ampm = h >= 12 ? 'pm' : 'am';
+        h = h % 12 || 12; // convert 0 to 12
+        return `${h.toString().padStart(2, '0')}:${minute} ${ampm}`;
+      }
     return (
         <div className='max-w-xl w-full mx-auto space-y-6 p-4'>
             <div className='flex items-center justify-between'>
@@ -77,7 +85,7 @@ const page = (props: Props) => {
                                     <div key={attendance.id} className='flex gap-4 hover:bg-muted rounded-md p-2'>
                                         <p>{index + 1}</p>
                                         <p>{attendance.member.name}</p>
-                                        <p className='ml-auto'>{attendance.time}</p>
+                                        <p className='ml-auto'>{attendance.time && convertToAmPm(attendance.time)}</p>
                                     </div>
                                 ))
                             }
