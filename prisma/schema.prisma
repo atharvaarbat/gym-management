@@ -20,6 +20,7 @@ model Member {
   email      String?
   memberCode String          @unique
   phone      BigInt
+  password   String          @default("Test@12345")
   address    String?
   DOB        String
   gender     Gender
@@ -154,8 +155,8 @@ model Exercise {
   level           String?
   mechanic        String?
   equipment       String?
-  primaryMuscle   String?
-  secondaryMuscle String?
+  primaryMuscle   String[]
+  secondaryMuscle String[]
   instructions    String[]
   category        String?
   images          String[]

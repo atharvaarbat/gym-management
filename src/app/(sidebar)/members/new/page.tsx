@@ -77,6 +77,7 @@ const page = () => {
           address: "Akola",
         }
       )
+      window.location.reload()
       hideLoading()
       return
     }

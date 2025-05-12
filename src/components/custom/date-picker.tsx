@@ -52,8 +52,8 @@ export function DatePickerDemo({ defaultDate, onDateChange }: DatePickerDemoProp
     value: i,
     label: format(new Date(2023, i), "MMMM"),
   }))
-  const years = Array.from({ length: 100 }, (_, i) => {
-    const year = new Date().getFullYear() - 50 + i
+  const years = Array.from({ length: 200 }, (_, i) => {
+    const year = new Date().getFullYear() - 100 + i
     return { value: year, label: year.toString() }
   })
 
