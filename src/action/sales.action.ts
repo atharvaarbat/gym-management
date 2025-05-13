@@ -745,5 +745,3 @@ export async function GetSalesWithPendingAmount(): Promise<any> {
     );
   }
 }
-
-

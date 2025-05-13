@@ -1,18 +1,17 @@
 {
-    "name": "Synergy Software",
-    "short_name": "Synergy",
+    "name": "Synergy Fitness App",
+    "short_name": "Synergy Fitness App",
     "start_url": "/",
     "background_color": "#fff",
-    "theme_color": "#05f",
+    "theme_color": "#000",
     "display": "standalone",
     "display_override": ["window-controls-overlay"],
     "icons": [
       {
         "src": "/fav.png",
-        "sizes": "192x192",
+        "sizes": "128x128",
         "type": "image/png"
       }
-
     ],
     "id": "synergy"
 }
