@@ -13,6 +13,7 @@ import { AddEnquiry, EnquiryInput } from "@/action/enquiries.action"
 import { DatePickerDemo } from "@/components/custom/date-picker"
 import ItemSelector from "@/components/custom/item-selector"
 import { useLoading } from "@/hooks/use-loading"
+import { capitalizeWords } from "@/lib/utils"
 
 
 
@@ -86,7 +87,7 @@ const page = () => {
           type="text"
           required
           value={formState.name}
-          onChange={(e) => handleInputChange(e.target.value, "name")}
+          onChange={(e) => handleInputChange(capitalizeWords(e.target.value), "name")}
         />
       </div>
       <div className="space-y-2">

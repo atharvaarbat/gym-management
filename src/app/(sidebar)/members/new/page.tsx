@@ -1,31 +1,32 @@
-"use client"
+"use client";
 
-import { DatePickerDemo } from "@/components/custom/date-picker"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Separator } from "@/components/ui/separator"
-import React, { useState } from "react"
-import { format, parse } from "date-fns"
-import { AddMember, MemberInput } from "@/action/member.action"
-import { toast } from "sonner"
-import { Phone } from "lucide-react"
-import { useLoading } from "@/hooks/use-loading"
-type Gender = "male" | "female" | "other"
+import { DatePickerDemo } from "@/components/custom/date-picker";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
+import React, { useState } from "react";
+import { format, parse } from "date-fns";
+import { AddMember, MemberInput } from "@/action/member.action";
+import { toast } from "sonner";
+import { Phone } from "lucide-react";
+import { useLoading } from "@/hooks/use-loading";
+import { capitalizeWords } from "@/lib/utils";
+type Gender = "male" | "female" | "other";
 
 interface FormState {
-  name: string
-  phone: string
-  email: string
-  gender: string
-  DOB: string
-  DOJ: string
-  address: string
+  name: string;
+  phone: string;
+  email: string;
+  gender: string;
+  DOB: string;
+  DOJ: string;
+  address: string;
 }
 
 const page = () => {
-  const { showLoading, hideLoading } = useLoading()
+  const { showLoading, hideLoading } = useLoading();
   const [formState, setFormState] = useState<MemberInput>({
     name: "",
     phone: 0,
@@ -35,62 +36,63 @@ const page = () => {
     DOB: "",
     DOJ: "",
     address: "Akola",
-  })
+  });
 
-  const handleInputChange = (
-    e: any,
-    field: keyof FormState
-  ) => {
-    setFormState((prev) => ({ ...prev, [field]: e }))
-  }
+  const handleInputChange = (e: any, field: keyof FormState) => {
+    setFormState((prev) => ({ ...prev, [field]: e }));
+  };
 
   const handleGenderChange = (value: Gender) => {
-    setFormState((prev) => ({ ...prev, gender: value }))
-  }
-
-
+    setFormState((prev) => ({ ...prev, gender: value }));
+  };
 
   const handleOnSubmit = async () => {
-    showLoading()
-    if(formState.name === "" || formState.phone === null || formState.DOB === "" || formState.DOJ === "") {
-      toast.error("Please fill all the required fields")
-      return
+    showLoading();
+    if (
+      formState.name === "" ||
+      formState.phone === null ||
+      formState.DOB === "" ||
+      formState.DOJ === ""
+    ) {
+      toast.error("Please fill all the required fields");
+      return;
     }
-    if(formState.phone.toString().length !== 10) {
-      toast.error("Phone number must be 10 digits")
-      return
+    if (formState.phone.toString().length !== 10) {
+      toast.error("Phone number must be 10 digits");
+      return;
     }
-    console.log("Form submitted with state:", formState)
+    console.log("Form submitted with state:", formState);
     // db operation
-    const response = await AddMember(formState)
-    if(response.id){
-      toast.success("Member added successfully")
-      setFormState(
-        {
-          name: "",
-          phone: 0,
-          email: "@gmail.com",
-          memberCode: "",
-          gender: "other",
-          DOB: "",
-          DOJ: "",
-          address: "Akola",
-        }
-      )
-      window.location.reload()
-      hideLoading()
-      return
+    const response = await AddMember(formState);
+    if (response.id) {
+      toast.success("Member added successfully");
+      setFormState({
+        name: "",
+        phone: 0,
+        email: "@gmail.com",
+        memberCode: "",
+        gender: "other",
+        DOB: "",
+        DOJ: "",
+        address: "Akola",
+      });
+      window.location.reload();
+      hideLoading();
+      return;
     }
-    hideLoading()
-    toast.error("Failed to add member")
-    return
-  }
+    hideLoading();
+    toast.error("Failed to add member");
+    return;
+  };
 
   return (
     <div className="max-w-xl w-full mx-auto space-y-6 p-4">
       <div>
-      <h1 className="text-3xl font-semibold">Create a new member</h1>
-      <p className="text-muted-foreground text-sm">Fields marked with <span className="text-destructive">*</span> are required</p>
+        <h1 className="text-3xl font-semibold">Create a new member</h1>
+        <p className="text-muted-foreground text-sm">
+          Fields marked with <span className="text-destructive">*</span> are
+          required
+        </p>
       </div>
       <Separator className="" />
       <div className="space-y-2">
@@ -100,9 +102,12 @@ const page = () => {
         <Input
           placeholder="Name"
           type="text"
+          style={{
+            textTransform: "capitalize",
+          }}
           required
           value={formState.name}
-          onChange={(e) => handleInputChange(e.target.value, "name")}
+          onChange={(e) => handleInputChange(capitalizeWords(e.target.value), "name")}
         />
       </div>
       <div className="space-y-2">
@@ -118,9 +123,7 @@ const page = () => {
         />
       </div>
       <div className="space-y-2">
-        <Label>
-          Email
-        </Label>
+        <Label>Email</Label>
         <Input
           placeholder="Email"
           type="email"
@@ -172,7 +175,7 @@ const page = () => {
         </Label>
         <DatePickerDemo
           defaultDate={formState.DOB}
-          onDateChange={(e)=>handleInputChange(e, "DOB")}
+          onDateChange={(e) => handleInputChange(e, "DOB")}
         />
       </div>
       <div className="space-y-2">
@@ -181,13 +184,11 @@ const page = () => {
         </Label>
         <DatePickerDemo
           defaultDate={formState.DOJ}
-          onDateChange={(e)=>handleInputChange(e, "DOJ")}
+          onDateChange={(e) => handleInputChange(e, "DOJ")}
         />
       </div>
       <div className="space-y-2">
-        <Label>
-          Address
-        </Label>
+        <Label>Address</Label>
         <Input
           placeholder="Address"
           type="text"
@@ -199,7 +200,7 @@ const page = () => {
         Create
       </Button>
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;
