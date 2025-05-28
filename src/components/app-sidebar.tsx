@@ -1,34 +1,28 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   IconCake,
-  IconCamera,
   IconChartBar,
   IconDashboard,
   IconDatabase,
   IconDoorEnter,
   IconFileAi,
   IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
   IconInnerShadowTop,
   IconListDetails,
   IconQuestionMark,
   IconReport,
   IconSearch,
-  IconSettings,
   IconToiletPaper,
   IconUser,
   IconUserCancel,
   IconUsers,
-} from "@tabler/icons-react"
+} from "@tabler/icons-react";
 
-import { NavDocuments } from "@/components/nav-documents"
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavDocuments } from "@/components/nav-documents";
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
 import {
   Sidebar,
   SidebarContent,
@@ -37,14 +31,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { ModeToggle } from "./custom/theme-toggle";
 
 const data = {
-  // user: {
-  //   name: "shadcn",
-  //   email: "m@example.com",
-  //   avatar: "/avatars/shadcn.jpg",
-  // },
   navMain: [
     {
       title: "Dashboard",
@@ -76,12 +66,6 @@ const data = {
       url: "/services",
       icon: IconReport,
     },
-    // {
-    //   title: "Diet Chart",
-    //   url: "/diet",
-    //   icon: IconSettings,
-    // }
-    
   ],
   navSecondary: [
     {
@@ -116,7 +100,6 @@ const data = {
       url: "/sales/new",
       icon: IconFileAi,
     },
-    
   ],
   followups: [
     {
@@ -133,17 +116,16 @@ const data = {
       name: "Birthdays",
       url: "/members/birthdays",
       icon: IconCake,
-    }
-    
+    },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
+          <SidebarMenuItem className="flex justify-between items-center">
             <SidebarMenuButton
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
@@ -153,18 +135,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <span className="text-base font-semibold">Synergy Fitness</span>
               </a>
             </SidebarMenuButton>
+            <ModeToggle />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavDocuments items={data.documents} title="Quick Creates"/>
-        <NavDocuments items={data.followups} title="Follow Ups"/>
+        <NavDocuments items={data.documents} title="Quick Creates" />
+        <NavDocuments items={data.followups} title="Follow Ups" />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
-        {/* <NavUser user={data.user} /> */}
-      </SidebarFooter>
+      <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
     </Sidebar>
-  )
+  );
 }
