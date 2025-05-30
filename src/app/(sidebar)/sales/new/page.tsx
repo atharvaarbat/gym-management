@@ -114,6 +114,17 @@ const page = (props: Props) => {
             </div>
             <div className="space-y-2">
                 <Label>
+                    Amount Paid
+                </Label>
+                <Input
+                    placeholder="Amount Paid"
+                    type="number"
+                    // value={formState.address}
+                    onChange={(e) => handleInputChange(Number(e.target.value), "paid")}
+                />
+            </div>
+            <div className="space-y-2">
+                <Label>
                     Description
                 </Label>
                 <Input
@@ -142,17 +153,7 @@ const page = (props: Props) => {
                     onChange={(e) => handleInputChange(Number(e.target.value), "discount")}
                 />
             </div>
-            <div className="space-y-2">
-                <Label>
-                    Amount Paid
-                </Label>
-                <Input
-                    placeholder="Amount Paid"
-                    type="number"
-                    // value={formState.address}
-                    onChange={(e) => handleInputChange(Number(e.target.value), "paid")}
-                />
-            </div>
+            
             <Card>
                 <CardContent>
                     Due Amount: {formState.amount - formState.paid - formState.discount}
