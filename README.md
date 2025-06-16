@@ -1,8 +1,3 @@
-Here's a **professional and detailed `README.md`** tailored for your **gym management software** project, perfect for both collaborators and recruiters 👇
-
----
-
-```md
 # 🏋️‍♂️ Gym Management Software – atharvaarbat-gym-5
 
 A full-featured, modern Gym Management Platform built with **Next.js**, **TypeScript**, **Prisma**, and **Tailwind CSS**. This project is a comprehensive tool for gym owners and trainers to manage members, attendance, sales, enquiries, diet plans, workout tracking, and much more – all from a responsive and intuitive dashboard.
@@ -171,10 +166,3 @@ This project is licensed under the MIT License – feel free to use, fork, or bu
 ---
 
 **Crafted with 💪 by Atharva Arbat**
-
-```
-
----
-
-Let me know if you'd like to auto-generate screenshots or links to demo credentials, deployment guide, or Docker support.
-```
