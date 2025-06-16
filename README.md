@@ -4,6 +4,13 @@ A full-featured, modern Gym Management Platform built with **Next.js**, **TypeSc
 
 ---
 
+![.](screenshots/1 (1).png)
+![.](screenshots/1 (2).png)
+![.](screenshots/1 (3).png)
+![.](screenshots/1 (4).png)
+![.](screenshots/1 (5).png)
+![.](screenshots/1 (16.png)
+
 ## 🔧 Tech Stack
 
 | Category       | Technology                          |
@@ -68,22 +75,6 @@ A full-featured, modern Gym Management Platform built with **Next.js**, **TypeSc
 
 ---
 
-## 🗂 Project Structure Overview
-
-```
-
-├── src/
-│   ├── app/                # All route segments & pages
-│   ├── action/             # Server Actions (Backend logic)
-│   ├── components/         # UI and reusable component modules
-│   ├── hooks/              # Custom React Hooks
-│   ├── lib/                # Utility files and Prisma Client
-│   └── prisma/             # Database schema (Prisma)
-
-````
-
----
-
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -95,7 +86,7 @@ A full-featured, modern Gym Management Platform built with **Next.js**, **TypeSc
 
 ```bash
 # Clone the repository
-git clone https://github.com/atharvaarbat/atharvaarbat-gym-5.git
+git clone https://github.com/atharvaarbat/gym-5.git
 cd atharvaarbat-gym-5
 
 # Install dependencies
@@ -114,29 +105,6 @@ npm run dev
 
 ---
 
-## 🖼 Screenshots
-
-> Add images of:
-
-* Dashboard
-* Member Detail View
-* Attendance Tracker
-* Diet Plan Form
-* Invoice Generator
-* Tools (BMI, BMR Calculator)
-
-```md
-<!-- Example -->
-![.](screenshots/1 (1).png)
-![.](screenshots/1 (2).png)
-![.](screenshots/1 (3).png)
-![.](screenshots/1 (4).png)
-![.](screenshots/1 (5).png)
-![.](screenshots/1 (16.png)
-```
-
----
-
 ## 🧠 Why this project?
 
 This project was built to demonstrate:
@@ -150,19 +118,5 @@ This project was built to demonstrate:
 
 ---
 
-## 📩 Contact
-
-If you're a recruiter, collaborator, or gym owner interested in this tool:
-
-📧 Email: [atharvaarbat@gmail.com](mailto:atharvaarbat@gmail.com)
-🔗 LinkedIn: [linkedin.com/in/atharvaarbat](https://linkedin.com/in/atharvaarbat)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License – feel free to use, fork, or build upon it.
-
----
 
 **Crafted with 💪 by Atharva Arbat**
