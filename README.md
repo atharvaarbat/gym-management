@@ -9,7 +9,7 @@ A full-featured, modern Gym Management Platform built with **Next.js**, **TypeSc
 ![.](screenshots/1%20(3).png)
 ![.](screenshots/1%20(4).png)
 ![.](screenshots/1%20(5).png)
-![.](screenshots/1%20(16.png)
+![.](screenshots/1%20(6).png)
 
 ## 🔧 Tech Stack
 
