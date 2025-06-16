@@ -4,12 +4,12 @@ A full-featured, modern Gym Management Platform built with **Next.js**, **TypeSc
 
 ---
 
-![A](screenshots/1 (1).png?raw=true)
-![.](screenshots/1 (2).png)
-![.](screenshots/1 (3).png)
-![.](screenshots/1 (4).png)
-![.](screenshots/1 (5).png)
-![.](screenshots/1 (16.png)
+![Plot](screenshots/1%20(1).png)
+![.](screenshots/1%20(2).png)
+![.](screenshots/1%20(3).png)
+![.](screenshots/1%20(4).png)
+![.](screenshots/1%20(5).png)
+![.](screenshots/1%20(16.png)
 
 ## 🔧 Tech Stack
 
