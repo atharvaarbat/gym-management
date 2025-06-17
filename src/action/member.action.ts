@@ -366,9 +366,9 @@ export async function getAllMembersWithActiveSale(): Promise<
         address: member.address ?? undefined,
         activeSale: activeSale
           ? {
-              ...activeSale,
-              description: activeSale.description ?? undefined,
-            }
+            ...activeSale,
+            description: activeSale.description ?? undefined,
+          }
           : null,
         activeServiceName: activeSale ? activeSale.service.name : null,
         age: differenceInYears(
@@ -478,5 +478,29 @@ export async function getAllActiveMembers(): Promise<any[]> {
     throw new Error(
       `Failed to fetch members with active sale: ${error.message}`
     );
+  }
+}
+
+
+
+export async function updateReviewStatus(member_id: string, status: boolean) {
+  console.log(member_id, status);
+  try {
+    const members = await prisma.member.update({
+      where: {
+        id: member_id,
+      },
+      data: {
+        reviewDone: status,
+      },
+    })
+    console.log(members);
+    return {
+      success: true
+    }
+  } catch (error: any) {
+    return {
+      success: false
+    }
   }
 }

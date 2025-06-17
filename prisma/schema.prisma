@@ -23,6 +23,7 @@ model Member {
   password   String          @default("Test@12345")
   address    String?
   DOB        String
+  reviewDone     Boolean         @default(false)
   gender     Gender
   DOJ        String
   createdAt  DateTime        @default(now())

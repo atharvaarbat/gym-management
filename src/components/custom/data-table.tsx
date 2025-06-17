@@ -27,7 +27,7 @@ interface Props {
         header: string,
         headerClassName?: string,
         cellClassName?: string,
-        cellContent: React.ReactNode,
+        cellContent?: React.ReactNode,
         cellContentGetRow?: (row: any) => React.ReactNode,
         onClick?: (rowId: any) => void,
         onClickGetRow?: (row: any) => void
@@ -115,13 +115,14 @@ export function DataTable({
                             <TableBody className="">
                                 {filteredRows.length > 0 ? (
                                     filteredRows.map((row: any, index: number) => (
-                                        <TableRow key={index} onClick={() => onItemClick && onItemClick(row)} className="cursor-pointer hover:bg-muted">
+                                        <TableRow key={index}  className="cursor-pointer hover:bg-muted">
                                             <TableCell className="font-medium">{index + 1}</TableCell>
                                             {
                                                 columns.map((column) => (
                                                     <TableCell
                                                         key={column.accessorKey}
                                                         className={column.cellClassName}
+                                                        onClick={() => onItemClick && onItemClick(row)}
                                                     >
                                                         {row[column.accessorKey]}
                                                     </TableCell>
