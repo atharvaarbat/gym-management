@@ -41,8 +41,8 @@ const page = (props: Props) => {
         setSelectedMember(row)
         const msg = `Hi👋🏻 ${row.name}  its your Birthday today, Team Synergy wishes you a very "Happy Birthday" 😊. Stay Healthy Stay Strong.`
         const msg1 = `Hello Dear ${row.name}, it's your birthday today . Team Synergy wishes you a very HAPPY BIRTHDAY 😊. Stay Healthy Stay Strong 💪🏻 %0A%0A ~ Dt. Dewyani Arbat & Team`
-        
-        setMessage(msg1)
+        const msg2 = `Hello Dear ${row.name}, it's your birthday today . Team Synergy wishes you a very HAPPY BIRTHDAY 😊.%0AStay Healthy Stay Strong 💪🏻 %0A%0A ~ Dt. Dewyani Arbat and Team`
+        setMessage(msg2)
     }
 
     async function fetchData() {
