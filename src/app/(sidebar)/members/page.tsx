@@ -137,12 +137,12 @@ const ReviewButton = ({ id, isDone }: { id: string; isDone: boolean }) => {
     return (
       <Button
         size={"icon"}
-        variant={"default"}
+        variant={"destructive"}
         className="cursor-pointer"
         onClick={() => updateReview(true)}
       >
         {!loading ? (
-          <Check size={16} className="" />
+          <X size={16} className="" />
         ) : (
           <div className="animate-spin rounded-full h-4 w-4 border-l-2 border-b-2 border-white"></div>
         )}
@@ -152,12 +152,12 @@ const ReviewButton = ({ id, isDone }: { id: string; isDone: boolean }) => {
     return (
       <Button
         size={"icon"}
-        variant={"destructive"}
+        variant={"default"}
         className="cursor-pointer"
         onClick={() => updateReview(false)}
       >
         {!loading ? (
-          <X size={16} />
+          <Check size={16} />
         ) : (
           <div className="animate-spin rounded-full h-4 w-4 border-l-2 border-b-2 border-white"></div>
         )}
