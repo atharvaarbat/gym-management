@@ -20,12 +20,9 @@ const columns = [
         header: 'Name',
     },
     {
-        accessorKey: 'member_phone',
-        header: 'Phone',
-    },
-    {
-        accessorKey: 'service_name',
-        header: 'Service',
+        accessorKey: 'endDate',
+        header: 'End',
+        cellClassName: 'capitalize',
     },
     {
         accessorKey: 'startDate',
@@ -33,9 +30,12 @@ const columns = [
         cellClassName: 'capitalize',
     },
     {
-        accessorKey: 'endDate',
-        header: 'End',
-        cellClassName: 'capitalize',
+        accessorKey: 'member_phone',
+        header: 'Phone',
+    },
+    {
+        accessorKey: 'service_name',
+        header: 'Service',
     },
 ]
 const page = (props: Props) => {
@@ -43,7 +43,7 @@ const page = (props: Props) => {
     const [days, setDays] = useState(0)
     const [SelectedSale, setSelectedSale] = useState<any>(null)
     const [message, setMessage] = useState('')
-    const {showLoading, hideLoading, isLoading} = useLoading()
+    const { showLoading, hideLoading, isLoading } = useLoading()
     useEffect(() => {
         showLoading()
         fetchData()
@@ -59,7 +59,7 @@ const page = (props: Props) => {
             setSalesList(data)
             hideLoading()
             return
-        }else{
+        } else {
             const data = await getAllExpiringSalesInXDays(days)
             setSalesList(data)
             hideLoading()
