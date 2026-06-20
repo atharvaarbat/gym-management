@@ -37,7 +37,7 @@ const OTP = ({ children }: Props) => {
         );
     }
 
-    if (value === '1210') {
+    if (value === '0987') {
         return <>{children}</>;
     }
 
